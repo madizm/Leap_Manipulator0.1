@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QLabel" name="label_display">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>640</width>
+      <height>480</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+      <pointsize>17</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>image to display</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::PlainText</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionSpinner"/>
+    <addaction name="actionControlPanel"/>
+   </widget>
+   <widget class="QMenu" name="menu_1">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionVisualizer"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuConnect">
+    <property name="title">
+     <string>Connect</string>
+    </property>
+    <addaction name="actionTo_Camera"/>
+    <addaction name="actionTo_Servo_Controller"/>
+    <addaction name="actionTo_Serial"/>
+   </widget>
+   <addaction name="menuConnect"/>
+   <addaction name="menu"/>
+   <addaction name="menu_1"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionVisualizer">
+   <property name="text">
+    <string>Visualizer</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionSpinner">
+   <property name="text">
+    <string>Spinner</string>
+   </property>
+  </action>
+  <action name="actionTo_Camera">
+   <property name="text">
+    <string>to Camera</string>
+   </property>
+   <property name="toolTip">
+    <string>connect to Camera</string>
+   </property>
+  </action>
+  <action name="actionTo_Servo_Controller">
+   <property name="text">
+    <string>to Servo Controller</string>
+   </property>
+   <property name="toolTip">
+    <string>connect to Servo Controller</string>
+   </property>
+  </action>
+  <action name="actionTo_Serial">
+   <property name="text">
+    <string>to Serial</string>
+   </property>
+   <property name="toolTip">
+    <string>connect to Serial</string>
+   </property>
+  </action>
+  <action name="actionControlPanel">
+   <property name="text">
+    <string>ControlPanel</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

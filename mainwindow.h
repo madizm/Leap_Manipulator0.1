@@ -14,6 +14,7 @@
 #include "ControlPanel.h"
 #include "WidgetSpinner.h"
 #include "SerialWIFI.h"
+#include "ImgProcessor.h"
 
 namespace Ui {
 class MainWindow;
@@ -52,6 +53,8 @@ private:
 
 	Controller controller;
 	FrameListener listener;
+
+	ImgProcessor* m_pImgProc;
 private:
     void initServerCamera();
     void initProcess();

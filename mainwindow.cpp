@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QImage>
 #include <QImageReader>
-
+//#include "ImgProcessor.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+	listener.quit();
 	delete m_pWidgetSpinner;
 	delete m_pSerial;
 	delete m_pControlPanel;
@@ -112,6 +113,7 @@ void MainWindow::acceptConnection ()
     connect(tcpServerConnection, SIGNAL(readyRead()),this, SLOT(receiveImage()));
     connect(tcpServerConnection, SIGNAL(error(QAbstractSocket::SocketError)),
             this, SLOT(displaySocketError(QAbstractSocket::SocketError)));
+	m_pImgProc = new ImgProcessor(this);
 }
 
 void MainWindow::displayImage ()
@@ -122,8 +124,10 @@ void MainWindow::displayImage ()
 
     QImageReader reader(&buf, "jpg");
     QImage image = reader.read ();
+	
+	QImage nImg = m_pImgProc->processImg(image);
 
-    ui->label_display->setPixmap (QPixmap::fromImage (image));
+    ui->label_display->setPixmap (QPixmap::fromImage (nImg));
 
     m_nImageSize = 0;
 }
@@ -199,25 +203,16 @@ void MainWindow::on_actionTo_Servo_Controller_triggered()
 {
 	if (m_pSerial == nullptr) {
 		m_pSerial = new SerialWIFI(this); 
-//		m_processSer->start("putty.exe -pw raspberry -m servo.sh pi@192.168.137.210");
+		m_processSer->start("putty.exe -pw raspberry -m servo.sh pi@192.168.137.210");
 		ModelFactory factory;
 		Model* as6dof = factory.createModel(ModelFactory::AS6DOF);
 		as6dof->setSerial(m_pSerial);
 		listener.addObserverModel(as6dof);
 		connect((SerialWIFI*)m_pSerial, &SerialWIFI::newConnection, this, &MainWindow::readySend);
 	}
-/*	if (m_pSerial != nullptr && m_pSerial->IsConnected()) {
-		qDebug() << "Serial Opened.." << endl;
-		ui->statusBar->showMessage("Serial Opened..", 2000);
+	else {
+		QMessageBox::information(this, "Information", "Serial already Opened!");
 	}
-	else
-	{
-		QMessageBox::critical(this, "Critical", "Failed to Open Serial.");
-		qDebug() << "Failed to Open Serial." << endl;
-		return;
-	}
-
-*/
 }
 
 void MainWindow::on_actionControlPanel_triggered()

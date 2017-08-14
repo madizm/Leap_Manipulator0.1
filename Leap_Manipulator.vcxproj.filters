@@ -121,6 +121,15 @@
     <ClCompile Include="SerialWIFI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_ImgProcessor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ImgProcessor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImgProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.h">
@@ -145,6 +154,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="SerialWIFI.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ImgProcessor.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

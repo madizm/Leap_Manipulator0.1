@@ -23,7 +23,7 @@ public slots:
     void setValue(int value);
 	int getValue();
 private slots:
-	void setDeg(int deg);
+	void setDeg();
 
 };
 

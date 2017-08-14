@@ -26,8 +26,8 @@ ServoSpinner::ServoSpinner(QWidget *parent, int min, int max, int value, int No)
     layout->addWidget (m_dial);
     layout->addWidget (m_lcd);
     setLayout (layout);
-    connect (m_dial, &QDial::valueChanged, this, &ServoSpinner::setDeg);
-//	setFocusPolicy(Qt::NoFocus);
+    connect (m_dial, &QDial::valueChanged, this, &ServoSpinner::setValue);
+	connect(m_dial, &QDial::sliderReleased, this, &ServoSpinner::setDeg);
 }
 ServoSpinner::~ServoSpinner()
 {
@@ -39,10 +39,11 @@ int ServoSpinner::getValue()
 {
 	return m_lcd->value();
 }
-void ServoSpinner::setDeg(int deg)
+void ServoSpinner::setDeg()
 {
-	emit valueChanged(deg, m_No);
-	m_lcd->display(deg);
+	int v = m_dial->value();
+	emit valueChanged(v, m_No);
+	m_lcd->display(v);
 }
 void ServoSpinner::setValue (int value)
 {

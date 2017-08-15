@@ -18,7 +18,7 @@ protected:
 	void timerEvent(QTimerEvent* e);
 	int m_nTimerId;
 signals:
-	void sig_trans(AS_6DOF::TRANS_TYPE trans);
+	void sig_trans(AS_6DOF::TRANS_TYPE trans, int factor=10);
 
 private:
 	int iLowH = 100;
@@ -33,6 +33,8 @@ private:
 	float m_rx = 640 / 2;
 	float m_ry = 480 / 2;
 	float m_R = 90;
-
+	int m_width = 0;
+	int m_height = 0;
 	bool m_bDetected = false;
+	bool m_bGrabed = false;
 };

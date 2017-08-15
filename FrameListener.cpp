@@ -80,7 +80,7 @@ void FrameListener::run()
 		vec << R, P, Y, x, y, z, s;
 		emit nextInfo(vec);
 	//	notify(vec);
-		msleep(600);
+		msleep(800);
 	}
 	running = false;
 }
@@ -112,11 +112,11 @@ void FrameListener::reportCurrentInfo(VectorXf info)
 	emit currentInfo(info);
 }
 
-void FrameListener::handleTrans(AS_6DOF::TRANS_TYPE trans)
+void FrameListener::handleTrans(AS_6DOF::TRANS_TYPE trans, int factor)
 {
 	for (int i = 0; i < numOberver; i++) {
 		if (observes[i]->inherits("AS_6DOF")) {
-			((AS_6DOF*)observes[i])->handleTrans(trans);
+			((AS_6DOF*)observes[i])->handleTrans(trans, factor);
 		}
 	}
 }

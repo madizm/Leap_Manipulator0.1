@@ -11,19 +11,22 @@ MainWindow::MainWindow(QWidget *parent) :
 	listener(controller, this)
 {
     ui->setupUi(this);
-
+	setWindowTitle("Leap Manipulator");
     initServerCamera ();
     initProcess ();
 	m_widgetSpinner = nullptr;
 	m_pControlPanel = nullptr;
 	m_pSerial = nullptr;
 	m_pWidgetSpinner = nullptr;
+	m_pCloseSerial = nullptr;
 
+//	ui->actionControlPanel->setEnabled(false);
+//	ui->actionSpinner->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
 {
-	listener.quit();
+	//listener.quit();
 	delete m_pWidgetSpinner;
 	delete m_pSerial;
 	delete m_pControlPanel;
@@ -40,6 +43,8 @@ void MainWindow::createWidgetSpinner ()
 	if (m_pWidgetSpinner == nullptr)
 		m_pWidgetSpinner = new WidgetSpinner(&listener);
 	m_pWidgetSpinner->show();
+	m_pWidgetSpinner->raise();
+	
 }
 
 QFrame *MainWindow::createSpinner ()
@@ -114,6 +119,7 @@ void MainWindow::acceptConnection ()
     connect(tcpServerConnection, SIGNAL(error(QAbstractSocket::SocketError)),
             this, SLOT(displaySocketError(QAbstractSocket::SocketError)));
 	m_pImgProc = new ImgProcessor(this);
+	connect(m_pImgProc, &ImgProcessor::sig_trans, &listener, &FrameListener::handleTrans);
 }
 
 void MainWindow::displayImage ()
@@ -153,6 +159,20 @@ void MainWindow::readySend ()
 {
 	QMessageBox::information(this, "Information", "SerialWIFI Ready");
 	ui->statusBar->showMessage("SerialWIFI Connected..", 2000);
+	if (m_pSerial->WriteData("00", 2) < 0) {
+		QMessageBox::critical(this, "Critical", "Failed to Open Remote Serial.");
+	}
+	else {
+		ui->actionTo_Serial->setEnabled(false);
+		ui->actionTo_Servo_Controller->setEnabled(false);
+		setWindowTitle("Leap Manipulator - [SerialWIFI Conneted]");
+		if (m_pControlPanel == nullptr)
+		{
+			m_pControlPanel = new ControlPanel(&listener, 0);
+			m_pControlPanel->setGeometry(50, 50, 400, 500);
+		}
+		m_pControlPanel->show();
+	}
 }
 
 void MainWindow::on_actionAbout_triggered() {
@@ -181,7 +201,11 @@ void MainWindow::on_actionTo_Serial_triggered()
 	}
 	if (m_pSerial!=nullptr && m_pSerial->IsConnected()) {
 		qDebug() << "Serial Opened.." << endl;
+		QMessageBox::information(this, "Information", "SerialWin Ready");
 		ui->statusBar->showMessage("Serial Opened..", 2000);
+		ui->actionTo_Serial->setEnabled(false);
+		ui->actionTo_Servo_Controller->setEnabled(false);
+		setWindowTitle("Leap Manipulator - [SerialWin Conneted]");
 	}
 	else
 	{
@@ -196,7 +220,8 @@ void MainWindow::on_actionTo_Serial_triggered()
 		m_pControlPanel->setGeometry(50, 50, 400, 500);
 	}
 	m_pControlPanel->show();
-	
+	//m_pCloseSerial = ui->mainToolBar->addAction("close serial");
+	//connect(m_pCloseSerial, &QAction::triggered, this, &MainWindow::closeSerial);
 }
 
 void MainWindow::on_actionTo_Servo_Controller_triggered()
@@ -213,6 +238,9 @@ void MainWindow::on_actionTo_Servo_Controller_triggered()
 	else {
 		QMessageBox::information(this, "Information", "Serial already Opened!");
 	}
+//	ui->mainToolBar->addAction("close serial");
+//	m_pCloseSerial = ui->mainToolBar->addAction("close serial");
+//	connect(m_pCloseSerial, &QAction::triggered, this, &MainWindow::closeSerial);
 }
 
 void MainWindow::on_actionControlPanel_triggered()
@@ -263,6 +291,16 @@ void MainWindow::showProcessFinished(int exitCode, QProcess::ExitStatus exitStat
     qDebug() << "showFinished: " << endl << exitCode << exitStatus;
     QString str = QString("process finished. exitCode: %1, exitStatus: %2.").arg (exitCode).arg(exitStatus);
     ui->statusBar->showMessage (str, 2000);
+}
+void MainWindow::closeSerial()
+{
+	delete m_pSerial;
+	m_pSerial = nullptr;
+	m_pCloseSerial->setVisible(false);
+	ui->actionTo_Serial->setEnabled(true);
+	ui->actionTo_Servo_Controller->setEnabled(true);
+	m_pControlPanel->hide();
+//	m_widgetSpinner->hide();
 }
 void MainWindow::displaySocketError (QAbstractSocket::SocketError socketError)
 {

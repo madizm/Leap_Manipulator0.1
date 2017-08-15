@@ -4,7 +4,7 @@ WidgetSpinner::WidgetSpinner(FrameListener * listener, QWidget *parent)
 	: QWidget(parent),
 	m_pListener(listener)
 {
-	setWindowFlags(Qt::Tool);
+	setWindowFlags(Qt::Tool|Qt::WindowStaysOnTopHint);
 	setWindowTitle("Spinner");
 	m_pSer0 = new ServoSpinner(this, -90, 90, 0);
 	m_pSer1 = new ServoSpinner(this, 0, 180, 60);

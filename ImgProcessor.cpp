@@ -71,6 +71,8 @@ QImage ImgProcessor::processImg(QImage & image)
 		m_rx = box.center.x;
 		m_ry = box.center.y;
 		m_R = box.angle;
+		m_height = box.size.height;
+		m_width = box.size.width;
 		for (int j = 0; j < 4; j++)
 			line(cimage, vtx[j], vtx[(j + 1) % 4], Scalar(255, 255, 255), 1, LINE_AA);
 		QString str = QString("(%1, %2, %3)").arg((int)m_rx).arg((int)m_ry).arg((int)m_R);
@@ -80,6 +82,8 @@ QImage ImgProcessor::processImg(QImage & image)
 		m_rx = 640 / 2;
 		m_ry = 480 / 2;
 		m_R = 90;
+		m_height = 0;
+		m_width = 0;
 	}
 	imgOriginal |= cimage;
 	//convert Mat to QImage
@@ -91,6 +95,50 @@ QImage ImgProcessor::processImg(QImage & image)
 
 void ImgProcessor::timerEvent(QTimerEvent * e)
 {
-	if (abs(m_rx-320)>10 || abs(m_ry - 240)>10 || abs(m_R - 90)>10)
-		cout << QString("x: %1  y: %2  R: %3").arg((int)m_rx).arg((int)m_ry).arg((int)m_R).toStdString() << endl; ;
+	if (m_bGrabed) {
+		return;
+	}
+	if (abs(m_rx - 320) > 20 || abs(m_ry - 240) > 20 || abs(m_R - 90) > 10)
+		cout << QString("x: %1  y: %2  R: %3  width: %4  height: %5")
+		.arg((int)m_rx).arg((int)m_ry).arg((int)m_R).arg(m_width).arg(m_height).toStdString() << endl;
+	else
+		return;
+
+	//if ((m_rx - 320) < -20) {
+	//	emit sig_trans(AS_6DOF::LEFT);
+	//}
+	//else if ((m_rx - 320) > 20) {
+	//	emit sig_trans(AS_6DOF::RIGHT);
+	//}
+
+	//if ((m_ry - 240) < -20) {
+	//	emit sig_trans(AS_6DOF::UP);
+	//}
+	//else if ((m_ry - 240) > 20) {
+	//	emit sig_trans(AS_6DOF::DOWN);
+	//}
+
+	//if (m_R - 90 < -10) {
+	//	emit sig_trans(AS_6DOF::ROLLA);
+	//}
+	//else if (m_R - 90 > 10) {
+	//	emit sig_trans(AS_6DOF::ROLL);
+	//}
+
+	if (m_R - 90 < -10) {
+		emit sig_trans(AS_6DOF::ROLLA, 90 - m_R);
+	}
+	else if (m_R - 90 > 10) {
+		emit sig_trans(AS_6DOF::ROLL, m_R - 90);
+	}
+
+	if ((m_height - 540) < -10) {
+	//	emit sig_trans(AS_6DOF::FORWARD, 20);
+	}
+
+	if (abs(m_height - 640 ) < 100 || abs(m_width - 480) < 20) {
+		emit sig_trans(AS_6DOF::GRAB);
+		std::cout << "grab!!!!!!!!!!" << std::endl;
+//		m_bGrabed = true;
+	}
 }

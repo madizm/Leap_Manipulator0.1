@@ -63,27 +63,54 @@ void AS_6DOF::setJointsDeg(VectorXf deg) {
 		std::cout << "no serial or serial is not connected" << std::endl;
 }
 
-void AS_6DOF::handleTrans(TRANS_TYPE trans)
+void AS_6DOF::handleTrans(TRANS_TYPE trans, int factor)
 {
 	float q = 0.0f;
+	VectorXf vec(6);
 	switch (trans)
 	{
 	case FORWARD:
 		q = atanf(m_x / m_z);
-		m_x -= 10 * sinf(q);
-		m_z -= 10 * cosf(q);
+		m_x -= factor * sinf(q);
+		m_z -= factor * cosf(q);
 		break;
 	case BACKWARD:
 		q = atanf(m_x / m_z);
-		m_x += 10 * sinf(q);
-		m_z += 10 * cosf(q);
+		m_x += factor * sinf(q);
+		m_z += factor * cosf(q);
 		break;
 	case UP:
-		m_y += 10;
+		m_y += factor;
 		break;
 	case DOWN:
-		m_y -= 10;
+		m_y -= factor;
 		break;
+	case LEFT:
+		m_q0 += factor;
+		vec << m_q0, m_q1, m_q2, m_q3, m_q4, m_q5;
+		setJointsDeg(vec);
+		return;
+	case RIGHT:
+		m_q0 -= factor;
+		vec << m_q0, m_q1, m_q2, m_q3, m_q4, m_q5;
+		setJointsDeg(vec);
+		return;
+	case ROLL:
+		m_q4 -= factor;
+		vec << m_q0, m_q1, m_q2, m_q3, m_q4, m_q5;
+		setJointsDeg(vec);
+		return;
+	case ROLLA:
+		m_q4 += factor;
+		vec << m_q0, m_q1, m_q2, m_q3, m_q4, m_q5;
+		setJointsDeg(vec);
+		return;
+	case GRAB:
+		m_q5 = 0.8;
+		vec << m_q0, m_q1, m_q2, m_q3, m_q4, m_q5;
+		setJointsDeg(vec);
+		m_bGrabed = true;
+		return;
 	default:
 		break;
 	}
@@ -110,6 +137,9 @@ void AS_6DOF::update(VectorXf info)
 		return;
 	}
 	m_Y = Y;
+	if (m_bGrabed) {
+		vecOUT(5) = m_strength;
+	}
 	/*m_R = R;
 	m_P = P;
 	m_Y = Y;
@@ -152,7 +182,7 @@ void AS_6DOF::initModel()
 	m_P = 0.0f;
 	m_Y = 0.0f;
 	m_strength = 0.0f;
-
+	m_bGrabed = false;
 	VectorXf info(7);
 	info << m_R, m_P, m_Y, m_x, m_y, m_z, m_strength;
 	update(info);

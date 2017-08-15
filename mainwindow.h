@@ -55,6 +55,8 @@ private:
 	FrameListener listener;
 
 	ImgProcessor* m_pImgProc;
+
+	QAction* m_pCloseSerial;
 private:
     void initServerCamera();
     void initProcess();
@@ -83,6 +85,8 @@ private slots:
     void showProcessState(QProcess::ProcessState);
     void showProcessError();
     void showProcessFinished(int, QProcess::ExitStatus);
+
+	void closeSerial();
 
 };
 

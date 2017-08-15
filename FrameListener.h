@@ -52,6 +52,6 @@ public slots:
 	//处理spinner的deg信号
 	void handleDegs(VectorXf deg);
 	//处理control panel的转换
-	void handleTrans(AS_6DOF::TRANS_TYPE trans);
+	void handleTrans(AS_6DOF::TRANS_TYPE trans, int factor = 10);
 	void handleReset();
 };

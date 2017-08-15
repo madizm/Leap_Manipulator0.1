@@ -69,41 +69,25 @@ void ControlPanel::autoScroll() {
 void ControlPanel::clickedUp()
 {
 	m_listener->handleTrans(AS_6DOF::UP);
-	//VectorXf info = m_listener->getInfo();
-	//info(4) += 10;//y
-	//m_listener->notify(info);
+//	m_listener->handleTrans(AS_6DOF::GRAB);
 }
 
 void ControlPanel::clickedDown()
 {
 	m_listener->handleTrans(AS_6DOF::DOWN);
-	//VectorXf info = m_listener->getInfo();
-	//info(4) -= 10;
-	//m_listener->notify(info);
+//	m_listener->handleTrans(AS_6DOF::RIGHT);
 }
 
 void ControlPanel::clickedForward()
 {
 	m_listener->handleTrans(AS_6DOF::FORWARD);
-	//VectorXf info = m_listener->getInfo();
-	//float x = info(3);
-	//float z = info(5);
-	//float q = atanf(x / z);
-	//info(3) -= 10 * sinf(q);
-	//info(5) -= 10 * cosf(q);
-	//m_listener->notify(info);
+//	m_listener->handleTrans(AS_6DOF::ROLL);
 }
 
 void ControlPanel::clickedBackward()
 {
 	m_listener->handleTrans(AS_6DOF::BACKWARD);
-	//VectorXf info = m_listener->getInfo();
-	//float x = info(3);
-	//float z = info(5);
-	//float q = atanf(x / z);
-	//info(3) += 10 * sinf(q);
-	//info(5) += 10 * cosf(q);
-	//m_listener->notify(info);
+//	m_listener->handleTrans(AS_6DOF::ROLLA);
 }
 
 void ControlPanel::clickedReset()

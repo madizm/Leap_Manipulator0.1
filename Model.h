@@ -23,7 +23,7 @@ public:
 	Model(QObject *parent = 0);
 	~Model();
 	void setSerial(SerialUtil* serial);
-	virtual void update(VectorXf) = 0;
+	virtual int update(VectorXf) = 0;
 
 protected:
 	SerialUtil* serial;

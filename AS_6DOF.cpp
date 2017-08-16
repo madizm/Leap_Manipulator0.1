@@ -15,7 +15,7 @@ AS_6DOF::~AS_6DOF()
 
 }
 //接收vector6f
-void AS_6DOF::setJointsDeg(VectorXf deg) {
+int AS_6DOF::setJointsDeg(VectorXf deg) {
 	float degq0 = deg(0);
 	float degq1 = deg(1);
 	float degq2 = deg(2);
@@ -57,10 +57,16 @@ void AS_6DOF::setJointsDeg(VectorXf deg) {
 	std::string s = ostr.str();
 	std::cout << s << std::endl;
 
-	if (serial != nullptr && serial->IsConnected())
-		std::cout << serial->WriteData(s.c_str(), s.length()) << " bytes sent" << std::endl;
-	else
+	int ret;
+	if (serial != nullptr && serial->IsConnected()) {
+		ret = serial->WriteData(s.c_str(), s.length());
+		std::cout << ret << " bytes sent" << std::endl;
+	}
+	else {
 		std::cout << "no serial or serial is not connected" << std::endl;
+		ret = -1;
+	}
+	return ret;
 }
 
 void AS_6DOF::handleTrans(TRANS_TYPE trans, int factor)
@@ -119,7 +125,7 @@ void AS_6DOF::handleTrans(TRANS_TYPE trans, int factor)
 	update(info);
 }
 
-void AS_6DOF::update(VectorXf info)
+int AS_6DOF::update(VectorXf info)
 {
 	float R = info(0);
 	float P = info(1);
@@ -134,7 +140,7 @@ void AS_6DOF::update(VectorXf info)
 
 	VectorXf vecOUT(6);
 	if (!translate2DEG(info, vecOUT)) {
-		return;
+		return -1;
 	}
 	m_Y = Y;
 	if (m_bGrabed) {
@@ -155,11 +161,11 @@ void AS_6DOF::update(VectorXf info)
 	m_q3 = vecOUT(3);
 	m_q4 = vecOUT(4);
 	m_q5 = vecOUT(5);*/
-	setJointsDeg(vecOUT);
+	return setJointsDeg(vecOUT);
 
 }
 
-void AS_6DOF::initModel()
+int AS_6DOF::initModel()
 {
 	l1 = 97.0f;
 	//l2 = 120.0;
@@ -185,7 +191,7 @@ void AS_6DOF::initModel()
 	m_bGrabed = false;
 	VectorXf info(7);
 	info << m_R, m_P, m_Y, m_x, m_y, m_z, m_strength;
-	update(info);
+	return update(info);
 }
 
 //输入(RPYxyzs)输出(q0,q1,q2,q3,q4,q5)返回是否转换成功

@@ -80,7 +80,7 @@ void FrameListener::run()
 		vec << R, P, Y, x, y, z, s;
 		emit nextInfo(vec);
 	//	notify(vec);
-		msleep(800);
+		msleep(1000);
 	}
 	running = false;
 }

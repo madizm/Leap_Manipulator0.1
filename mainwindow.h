@@ -57,6 +57,9 @@ private:
 	ImgProcessor* m_pImgProc;
 
 	QAction* m_pCloseSerial;
+
+	ModelFactory factory;
+	Model* as6dof;
 private:
     void initServerCamera();
     void initProcess();

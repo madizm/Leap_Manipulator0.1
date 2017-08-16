@@ -159,10 +159,12 @@ void MainWindow::readySend ()
 {
 	QMessageBox::information(this, "Information", "SerialWIFI Ready");
 	ui->statusBar->showMessage("SerialWIFI Connected..", 2000);
-	if (m_pSerial->WriteData("00", 2) < 0) {
+	if (((AS_6DOF*)as6dof)->initModel() < 0) {
 		QMessageBox::critical(this, "Critical", "Failed to Open Remote Serial.");
+		m_pSerial = nullptr;
 	}
-	else {
+	else 
+	{
 		ui->actionTo_Serial->setEnabled(false);
 		ui->actionTo_Servo_Controller->setEnabled(false);
 		setWindowTitle("Leap Manipulator - [SerialWIFI Conneted]");
@@ -194,8 +196,7 @@ void MainWindow::on_actionTo_Serial_triggered()
 {
 	if (m_pSerial == nullptr) {
 		m_pSerial = new SerialWin("\\\\.\\COM5");
-		ModelFactory factory;
-		Model* as6dof = factory.createModel(ModelFactory::AS6DOF);
+		as6dof = factory.createModel(ModelFactory::AS6DOF);
 		as6dof->setSerial(m_pSerial);
 		listener.addObserverModel(as6dof);
 	}
@@ -211,6 +212,7 @@ void MainWindow::on_actionTo_Serial_triggered()
 	{
 		QMessageBox::critical(this, "Critical", "Failed to Open Serial.");
 		qDebug() << "Failed to Open Serial." << endl;
+		m_pSerial = nullptr;
 		return;
 	}
 		
@@ -229,8 +231,8 @@ void MainWindow::on_actionTo_Servo_Controller_triggered()
 	if (m_pSerial == nullptr) {
 		m_pSerial = new SerialWIFI(this); 
 		m_processSer->start("putty.exe -pw raspberry -m servo.sh pi@192.168.137.210");
-		ModelFactory factory;
-		Model* as6dof = factory.createModel(ModelFactory::AS6DOF);
+		//ModelFactory factory;
+		as6dof = factory.createModel(ModelFactory::AS6DOF);
 		as6dof->setSerial(m_pSerial);
 		listener.addObserverModel(as6dof);
 		connect((SerialWIFI*)m_pSerial, &SerialWIFI::newConnection, this, &MainWindow::readySend);

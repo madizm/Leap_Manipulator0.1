@@ -19,11 +19,11 @@ public:
 	}TRANS_TYPE;
 	AS_6DOF(QObject *parent = 0);
 	~AS_6DOF();
-	void setJointsDeg(VectorXf deg);
+	int setJointsDeg(VectorXf deg);
 	void handleTrans(TRANS_TYPE trans, int factor = 10);
 public slots:
-	virtual void update(VectorXf info);
-	void initModel();
+	virtual int update(VectorXf info);
+	int initModel();
 
 private:
 	float l1, l2, l3;

@@ -29,6 +29,7 @@ ImgProcessor::~ImgProcessor()
 
 QImage ImgProcessor::processImg(QImage & image)
 {
+	//return image;
 	m_bDetected = false;
 	//convert QImage to Mat
 	Mat imgOriginal = cv::Mat(image.height(), image.width(), CV_8UC4, (void*)image.constBits(), image.bytesPerLine());
@@ -93,8 +94,97 @@ QImage ImgProcessor::processImg(QImage & image)
 	return nimage.copy();
 }
 
+bool ImgProcessor::processImg(QImage & image, QImage & box)
+{
+	bool ret = false;
+	//convert QImage to Mat
+	Mat imgOriginal = cv::Mat(image.height(), image.width(), CV_8UC4, (void*)image.constBits(), image.bytesPerLine());
+
+	Mat imgHSV;
+	vector<Mat> hsvSplit;
+	cvtColor(imgOriginal, imgHSV, COLOR_BGR2HSV);
+	Mat imgThresholded;
+
+	inRange(imgHSV, Scalar(iLowH, iLowS, iLowV), Scalar(iHighH, iHighS, iHighV), imgThresholded);
+
+	Mat element = getStructuringElement(MORPH_RECT, Size(5, 5));
+	morphologyEx(imgThresholded, imgThresholded, MORPH_OPEN, element);
+	morphologyEx(imgThresholded, imgThresholded, MORPH_CLOSE, element);
+
+	vector<vector<Point> > contours;
+	findContours(imgThresholded, contours, RETR_LIST, CHAIN_APPROX_NONE);
+
+	Mat cimage = Mat::zeros(imgThresholded.size(), CV_8UC4);
+
+	for (size_t i = 0; i < contours.size(); i++)
+	{
+		size_t count = contours[i].size();
+		if (count < 6)
+			continue;
+
+		Mat pointsf;
+		Mat(contours[i]).convertTo(pointsf, CV_32F);
+		RotatedRect box = fitEllipse(pointsf);
+
+		if (MAX(box.size.width, box.size.height) > MIN(box.size.width, box.size.height) * 30)
+			continue;
+
+		if (box.size.width < cimage.size().width / 4)
+			continue;
+
+		Point2f vtx[4];
+		box.points(vtx);
+		m_bDetected = true;
+		m_rx = box.center.x;
+		m_ry = box.center.y;
+		m_R = box.angle;
+		m_height = box.size.height;
+		m_width = box.size.width;
+		for (int j = 0; j < 4; j++)
+			line(cimage, vtx[j], vtx[(j + 1) % 4], Scalar(255, 255, 255), 1, LINE_AA);
+		QString str = QString("(%1, %2, %3)").arg((int)m_rx).arg((int)m_ry).arg((int)m_R);
+		putText(cimage, str.toStdString(), Point2f(m_rx, m_ry), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(255, 255, 255), 1, LINE_AA);
+		ret = true;
+	}
+	imgOriginal |= cimage;
+	//convert Mat to QImage
+	const uchar *pSrc = (const uchar*)imgOriginal.data;
+	// Create QImage with same dimensions as input Mat    
+	QImage nimage(pSrc, imgOriginal.cols, imgOriginal.rows, imgOriginal.step, QImage::Format_ARGB32);
+	image = nimage.copy();
+	QImage nbox((const uchar*)cimage.data, cimage.cols, cimage.rows, cimage.step, QImage::Format_ARGB32);
+	box = nbox.copy();
+	return ret;
+}
+
+bool ImgProcessor::orQImage(QImage & ori, QImage & box)
+{
+	Mat matOri, matBox;
+	QImage2Mat(ori, matOri);
+	QImage2Mat(box, matBox);
+	matOri |= matBox;
+	Mat2QImage(matOri, ori);
+	return true;
+}
+
+bool ImgProcessor::Mat2QImage(Mat & mat, QImage & img)
+{
+	QImage nimage((const uchar*)mat.data, mat.cols, mat.rows, mat.step, QImage::Format_ARGB32);
+	img = nimage.copy();
+	return true;
+}
+
+bool ImgProcessor::QImage2Mat(QImage & image, Mat & mat)
+{
+	mat = cv::Mat(image.height(), image.width(), CV_8UC4, (void*)image.constBits(), image.bytesPerLine());
+	return true;
+}
+
+
+
 void ImgProcessor::timerEvent(QTimerEvent * e)
 {
+	return;
 	if (m_bGrabed) {
 		return;
 	}

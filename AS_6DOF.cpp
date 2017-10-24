@@ -215,11 +215,6 @@ bool AS_6DOF::translate2DEG(VectorXf infoIN, VectorXf &infoOUT)
 	float qq0;
 	qq0 = atanf(x / z);//底座旋转角度
 
-	//float fac = 0.8f;//扩大人手可移动的范围
-	//x = x*fac;
-	//y = y*fac;
-	//z = z*fac;
-
 	float zz0 = -sqrtf(z*z + x*x);//手腕到原点在水平面投影的长度
 
 	float A = y ;
@@ -235,16 +230,17 @@ bool AS_6DOF::translate2DEG(VectorXf infoIN, VectorXf &infoOUT)
 
 	float p = l1 + l2*cos(theta2);
 	float q = l2*sin(theta2);
-	t = (p*A - q*B) / (p*p + q*q);
+//	t = (p*A - q*B) / (p*p + q*q);
+	t = (B*p + A*q) / (p*p + q*q);
 	if (t>1) {
 		std::cout << "Can Not Reach!!" << std::endl;
 		emit errorOccurred(Model::CANT_REACH);
 		return false;
 	}
-	float theta1 = asinf(t);//asin的区间与要求不一致
-
-	if(abs(l1*sinf(theta1)+l2*sinf(theta1+theta2)-A)>5.0f)
-		theta1 = M_PI - asinf(t);
+	//float theta1 = asinf(t);//asin的区间与要求不一致
+	float theta1 = acosf(t);
+	//if(abs(l1*sinf(theta1)+l2*sinf(theta1+theta2)-A)>5.0f)
+	//	theta1 = M_PI - asinf(t);
 /*
 	m_x = (l2*cos(theta1 + theta2) + l1*cos(theta1))*sin(qq0);
 	m_y = l2*sin(theta1 + theta2) + l1*sin(theta1);

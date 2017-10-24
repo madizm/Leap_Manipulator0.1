@@ -5,7 +5,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "AS_6DOF.h"
-
+using namespace cv;
 class ImgProcessor : public QObject
 {
 	Q_OBJECT
@@ -14,6 +14,10 @@ public:
 	ImgProcessor(QObject *parent);
 	~ImgProcessor();
 	QImage processImg(QImage &image);
+	bool processImg(QImage &image, QImage &box);
+	bool orQImage(QImage &ori, QImage &box);
+	bool Mat2QImage(Mat &mat, QImage &img);
+	bool QImage2Mat(QImage &image, Mat &mat);
 protected:
 	void timerEvent(QTimerEvent* e);
 	int m_nTimerId;

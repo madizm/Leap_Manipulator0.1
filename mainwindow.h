@@ -15,7 +15,7 @@
 #include "WidgetSpinner.h"
 #include "SerialWIFI.h"
 #include "ImgProcessor.h"
-
+#include "ImgDeliverer.h"
 namespace Ui {
 class MainWindow;
 }
@@ -60,9 +60,13 @@ private:
 
 	ModelFactory factory;
 	Model* as6dof;
+
+	ImgDeliverer *m_pImgDeliverer;
+
 private:
     void initServerCamera();
     void initProcess();
+	void initCamera();
 
     QFrame *createSpinner();
     void createDockSpinner();
@@ -72,6 +76,7 @@ private:
 private slots:
     //socket
     void receiveImage();
+	void receiveImgFromDeliverer(QImage img);
     void acceptConnection();
     void displaySocketError(QAbstractSocket::SocketError socketError);
 

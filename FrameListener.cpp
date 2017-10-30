@@ -36,6 +36,9 @@ void FrameListener::addObserverModel(Model * m)
 		connect((AS_6DOF*)m, &AS_6DOF::currentInfo, this, &FrameListener::reportCurrentInfo);
 		connect(this, &FrameListener::nextInfo, (AS_6DOF*)m, &AS_6DOF::update);
 	}
+	else if (m->inherits("Car_Doit")) {
+		connect(this, &FrameListener::nextInfo, (Car_Doit*)m, &Car_Doit::update);
+	}
 }
 
 void FrameListener::stopListen()
@@ -117,6 +120,15 @@ void FrameListener::handleTrans(AS_6DOF::TRANS_TYPE trans, int factor)
 	for (int i = 0; i < numOberver; i++) {
 		if (observes[i]->inherits("AS_6DOF")) {
 			((AS_6DOF*)observes[i])->handleTrans(trans, factor);
+		}
+	}
+}
+
+void FrameListener::handleTrans(Car_Doit::TRANS_TYPE trans, int factor)
+{
+	for (int i = 0; i < numOberver; i++) {
+		if (observes[i]->inherits("Car_Doit")) {
+			((Car_Doit*)observes[i])->handleTrans(trans, factor);
 		}
 	}
 }

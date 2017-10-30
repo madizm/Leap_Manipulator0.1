@@ -6,6 +6,7 @@
 #include "Leap.h"
 #include "Model.h"
 #include "AS_6DOF.h"
+#include "Car_Doit.h"
 #include <Windows.h>
 
 using namespace Leap;
@@ -53,5 +54,6 @@ public slots:
 	void handleDegs(VectorXf deg);
 	//处理control panel的转换
 	void handleTrans(AS_6DOF::TRANS_TYPE trans, int factor = 10);
+	void handleTrans(Car_Doit::TRANS_TYPE trans, int factor = 100);
 	void handleReset();
 };

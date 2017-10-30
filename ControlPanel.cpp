@@ -40,6 +40,21 @@ ControlPanel::ControlPanel(FrameListener * listener, QWidget *parent)
 	hlayout1->addWidget(m_btnUp);
 	hlayout1->addWidget(m_btnDown);
 	layout->addLayout(hlayout1);
+	m_splitter = new QSplitter(Qt::Horizontal, this);
+	m_splitter->setHandleWidth(1);
+	m_btnCarForward = new QPushButton("CarForward", this);
+	m_btnCarBackward = new QPushButton("CarBackward", this);
+	m_btnCarLeft = new QPushButton("CarSteerLeft", this);
+	m_btnCarRight = new QPushButton("CarSteerRight", this);
+	QHBoxLayout *hlayout2 = new QHBoxLayout;
+	hlayout2->addWidget(m_btnCarForward);
+	hlayout2->addWidget(m_btnCarBackward);
+	QHBoxLayout *hlayout3 = new QHBoxLayout;
+	hlayout3->addWidget(m_btnCarLeft);
+	hlayout3->addWidget(m_btnCarRight);
+	layout->addWidget(m_splitter);
+	layout->addLayout(hlayout2);
+	layout->addLayout(hlayout3);
 	layout->addWidget(m_label);
 	layout->addWidget(m_editDisplay);
 	setLayout(layout);
@@ -93,6 +108,22 @@ void ControlPanel::clickedBackward()
 void ControlPanel::clickedReset()
 {
 	m_listener->handleReset();
+}
+
+void ControlPanel::clickedSteerLeft()
+{
+}
+
+void ControlPanel::clickedCarForward()
+{
+}
+
+void ControlPanel::clickedCarBackward()
+{
+}
+
+void ControlPanel::clickedSteerRight()
+{
 }
 
 void ControlPanel::showError(const Model::ERROR_TYPE error)

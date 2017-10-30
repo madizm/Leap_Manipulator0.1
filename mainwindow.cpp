@@ -295,14 +295,14 @@ void MainWindow::on_actionTo_Servo_Controller_triggered()
 
 void MainWindow::on_actionControlPanel_triggered()
 {
-	if (m_pSerial == nullptr) {
-		QMessageBox::critical(this, "Critical", "Serial Not Initialized!");
-		return;
-	}
-	if (!m_pSerial->IsConnected()) {
-		QMessageBox::critical(this, "Critical", "Serial Not Connected yet!");
-		return;
-	}
+	//if (m_pSerial == nullptr) {
+	//	QMessageBox::critical(this, "Critical", "Serial Not Initialized!");
+	//	return;
+	//}
+	//if (!m_pSerial->IsConnected()) {
+	//	QMessageBox::critical(this, "Critical", "Serial Not Connected yet!");
+	//	return;
+	//}
 	if (m_pControlPanel == nullptr)
 	{
 		m_pControlPanel = new ControlPanel(&listener, 0);

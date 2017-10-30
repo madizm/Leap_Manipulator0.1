@@ -60,10 +60,10 @@ int AS_6DOF::setJointsDeg(VectorXf deg) {
 	int ret;
 	if (serial != nullptr && serial->IsConnected()) {
 		ret = serial->WriteData(s.c_str(), s.length());
-		std::cout << ret << " bytes sent" << std::endl;
+		std::cout << ret << " bytes sent to the manipulator" << std::endl;
 	}
 	else {
-		std::cout << "no serial or serial is not connected" << std::endl;
+		std::cout << "no serial or serial is not connected to the manipulator" << std::endl;
 		ret = -1;
 	}
 	return ret;

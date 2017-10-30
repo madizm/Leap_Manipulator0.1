@@ -26,6 +26,12 @@ private:
 
 	FrameListener *m_listener;
 
+	QSplitter *m_splitter;
+	QPushButton *m_btnCarForward;
+	QPushButton *m_btnCarBackward;
+	QPushButton *m_btnCarLeft;
+	QPushButton *m_btnCarRight;
+
 private slots:
 	void clickedStopContinue();
 	void clickedUp();
@@ -33,6 +39,11 @@ private slots:
 	void clickedForward();
 	void clickedBackward();
 	void clickedReset();
+
+	void clickedSteerLeft();
+	void clickedCarForward();
+	void clickedCarBackward();
+	void clickedSteerRight();
 
 	void showError(Model::ERROR_TYPE error);
 	void showNextInfo(VectorXf info);

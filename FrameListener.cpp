@@ -124,7 +124,7 @@ void FrameListener::handleTrans(AS_6DOF::TRANS_TYPE trans, int factor)
 	}
 }
 
-void FrameListener::handleTrans(Car_Doit::TRANS_TYPE trans, int factor)
+void FrameListener::handleTrans_car(Car_Doit::TRANS_TYPE trans, int factor)
 {
 	for (int i = 0; i < numOberver; i++) {
 		if (observes[i]->inherits("Car_Doit")) {

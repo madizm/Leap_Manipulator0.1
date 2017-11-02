@@ -112,22 +112,18 @@ void ControlPanel::clickedReset()
 
 void ControlPanel::clickedSteerLeft()
 {
-	m_listener->handleTrans_car(Car_Doit::STEER_LEFT);
 }
 
 void ControlPanel::clickedCarForward()
 {
-	m_listener->handleTrans_car(Car_Doit::FORWARD);
 }
 
 void ControlPanel::clickedCarBackward()
 {
-	m_listener->handleTrans_car(Car_Doit::BACKWARD);
 }
 
 void ControlPanel::clickedSteerRight()
 {
-	m_listener->handleTrans_car(Car_Doit::STEER_RIGHT);
 }
 
 void ControlPanel::showError(const Model::ERROR_TYPE error)

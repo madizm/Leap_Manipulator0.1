@@ -14,7 +14,7 @@ public:
 		STEER_LEFT,
 		STEER_RIGHT
 	}TRANS_TYPE;
-	Car_Doit(QObject *parent);
+	Car_Doit(QObject *parent = 0);
 	~Car_Doit();
 	void handleTrans(TRANS_TYPE trans, int factor = 100);
 public slots:

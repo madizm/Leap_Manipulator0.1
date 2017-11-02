@@ -8,16 +8,16 @@ ImgProcessor::ImgProcessor(QObject *parent)
 	if (m_nTimerId == 0) {
 		cout << "Failed to initialize timer" << endl;
 	}
-	namedWindow("Control", WINDOW_NORMAL| WINDOW_FREERATIO| WINDOW_GUI_NORMAL);
-	resizeWindow("Control", 300, 300);
-	cvCreateTrackbar("LowH", "Control", &iLowH, 179); //Hue (0 - 179)
-	cvCreateTrackbar("HighH", "Control", &iHighH, 179);
+	//namedWindow("Control", WINDOW_NORMAL| WINDOW_FREERATIO| WINDOW_GUI_NORMAL);
+	//resizeWindow("Control", 300, 300);
+	//cvCreateTrackbar("LowH", "Control", &iLowH, 179); //Hue (0 - 179)
+	//cvCreateTrackbar("HighH", "Control", &iHighH, 179);
 
-	cvCreateTrackbar("LowS", "Control", &iLowS, 255); //Saturation (0 - 255)
-	cvCreateTrackbar("HighS", "Control", &iHighS, 255);
+	//cvCreateTrackbar("LowS", "Control", &iLowS, 255); //Saturation (0 - 255)
+	//cvCreateTrackbar("HighS", "Control", &iHighS, 255);
 
-	cvCreateTrackbar("LowV", "Control", &iLowV, 255); //Value (0 - 255)
-	cvCreateTrackbar("HighV", "Control", &iHighV, 255);
+	//cvCreateTrackbar("LowV", "Control", &iLowV, 255); //Value (0 - 255)
+	//cvCreateTrackbar("HighV", "Control", &iHighV, 255);
 }
 
 ImgProcessor::~ImgProcessor()
@@ -231,4 +231,14 @@ void ImgProcessor::timerEvent(QTimerEvent * e)
 		std::cout << "grab!!!!!!!!!!" << std::endl;
 //		m_bGrabed = true;
 	}
+}
+
+void ImgProcessor::slt_setHSV(int H, int S, int V)
+{
+	iLowH = max(H - eps, 0);
+	iHighH = min(H + eps, 179);
+	iLowS = max(S - eps * 3, 0);
+	iHighS = min(S + eps * 3, 255);
+	iLowV = max(V - eps * 3, 0);
+	iHighV = min(V + eps * 3, 255);
 }

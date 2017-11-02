@@ -3,7 +3,7 @@
 ImgReceiver::ImgReceiver(QObject *parent)
 	: QThread(parent)
 {
-	m_bRunning = true;
+	m_bRunning = false;
 	m_pTcpServer = new QTcpServer(this);
 	m_pImgProc = new ImgProcessor(this);
 	m_numBytesRecved = 0;
@@ -18,7 +18,7 @@ ImgReceiver::ImgReceiver(QObject *parent)
 
 ImgReceiver::~ImgReceiver()
 {
-	imgQue.clear();
+//	imgQue.clear();
 	delete m_pTcpServer;
 	delete m_pImgProc;
 }
@@ -31,6 +31,7 @@ void ImgReceiver::stopReceiving()
 
 void ImgReceiver::run()
 {
+	m_bRunning = true;
 	connect(m_pTcpServer, &QTcpServer::newConnection, this, &ImgReceiver::slt_acceptConnection);
 	while(m_bRunning){}
 	qDebug() << "exit imgReceiver";

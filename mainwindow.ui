@@ -55,6 +55,8 @@
     </property>
     <addaction name="actionSpinner"/>
     <addaction name="actionControlPanel"/>
+    <addaction name="separator"/>
+    <addaction name="actionTake_A_Pic"/>
    </widget>
    <widget class="QMenu" name="menu_1">
     <property name="title">
@@ -127,6 +129,11 @@
   <action name="actionControlPanel">
    <property name="text">
     <string>ControlPanel</string>
+   </property>
+  </action>
+  <action name="actionTake_A_Pic">
+   <property name="text">
+    <string>Take A Pic</string>
    </property>
   </action>
  </widget>

@@ -15,23 +15,25 @@ public:
 	~ImgProcessor();
 	QImage processImg(QImage &image);
 	bool processImg(QImage &image, QImage &box);
-	bool orQImage(QImage &ori, QImage &box);
-	bool Mat2QImage(Mat &mat, QImage &img);
-	bool QImage2Mat(QImage &image, Mat &mat);
+	static bool orQImage(QImage &ori, QImage &box);
+	static bool Mat2QImage(Mat &mat, QImage &img);
+	static bool QImage2Mat(QImage &image, Mat &mat);
 protected:
 	void timerEvent(QTimerEvent* e);
 	int m_nTimerId;
 signals:
 	void sig_trans(AS_6DOF::TRANS_TYPE trans, int factor=10);
-
+public slots:
+	void slt_setHSV(int H, int S, int V);
 private:
-	int iLowH = 100;
+	int eps = 20;
+	int iLowH = 120;
 	int iHighH = 140;
 
-	int iLowS = 60;
+	int iLowS = 190;
 	int iHighS = 255;
 
-	int iLowV = 40;
+	int iLowV = 190;
 	int iHighV = 255;
 
 	float m_rx = 640 / 2;

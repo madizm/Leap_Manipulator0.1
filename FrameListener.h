@@ -54,6 +54,6 @@ public slots:
 	void handleDegs(VectorXf deg);
 	//处理control panel的转换
 	void handleTrans(AS_6DOF::TRANS_TYPE trans, int factor = 10);
-	void handleTrans_car(Car_Doit::TRANS_TYPE trans, int factor = 100);
+	void handleTrans_car(Car_Doit::TRANS_TYPE_CAR trans, int factor = 100);
 	void handleReset();
 };

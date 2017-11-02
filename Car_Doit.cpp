@@ -9,7 +9,7 @@ Car_Doit::~Car_Doit()
 {
 }
 
-void Car_Doit::handleTrans(TRANS_TYPE trans, int factor)
+void Car_Doit::handleTrans(TRANS_TYPE_CAR trans, int factor)
 {
 	switch (trans)
 	{

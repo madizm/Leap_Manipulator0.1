@@ -157,6 +157,15 @@
     <ClCompile Include="Car_Doit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_ShowAPic.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_ShowAPic.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShowAPic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.h">
@@ -193,6 +202,9 @@
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="Car_Doit.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ShowAPic.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

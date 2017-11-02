@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<Model::ERROR_TYPE>("ERROR_TYPE");
 	qRegisterMetaType<VectorXf>("VectorXf");
 	qRegisterMetaType<AS_6DOF::TRANS_TYPE>("TRANS_TYPE");
+	qRegisterMetaType<Car_Doit::TRANS_TYPE_CAR>("TRANS_TYPE_CAR");
 	//qRegisterMetaType<QImage>();
 
     MainWindow w;

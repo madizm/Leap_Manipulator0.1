@@ -122,7 +122,7 @@ void AS_6DOF::handleTrans(TRANS_TYPE trans, int factor)
 	}
 	VectorXf info(7);
 	info << m_R, m_P, m_Y, m_x, m_y, m_z, m_strength;
-	update(info);
+	AS_6DOF::update(info);
 }
 
 int AS_6DOF::update(VectorXf info)
@@ -191,7 +191,7 @@ int AS_6DOF::initModel()
 	m_bGrabed = false;
 	VectorXf info(7);
 	info << m_R, m_P, m_Y, m_x, m_y, m_z, m_strength;
-	return update(info);
+	return AS_6DOF::update(info);
 }
 
 //输入(RPYxyzs)输出(q0,q1,q2,q3,q4,q5)返回是否转换成功

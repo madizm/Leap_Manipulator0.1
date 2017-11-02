@@ -34,6 +34,7 @@ public:
     QAction *actionTo_Servo_Controller;
     QAction *actionTo_Serial;
     QAction *actionControlPanel;
+    QAction *actionTake_A_Pic;
     QWidget *centralWidget;
     QLabel *label_display;
     QMenuBar *menuBar;
@@ -62,6 +63,8 @@ public:
         actionTo_Serial->setObjectName(QStringLiteral("actionTo_Serial"));
         actionControlPanel = new QAction(MainWindow);
         actionControlPanel->setObjectName(QStringLiteral("actionControlPanel"));
+        actionTake_A_Pic = new QAction(MainWindow);
+        actionTake_A_Pic->setObjectName(QStringLiteral("actionTake_A_Pic"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         label_display = new QLabel(centralWidget);
@@ -96,6 +99,8 @@ public:
         menuBar->addAction(menu_1->menuAction());
         menu->addAction(actionSpinner);
         menu->addAction(actionControlPanel);
+        menu->addSeparator();
+        menu->addAction(actionTake_A_Pic);
         menu_1->addAction(actionVisualizer);
         menu_1->addSeparator();
         menu_1->addAction(actionAbout);
@@ -127,6 +132,7 @@ public:
         actionTo_Serial->setToolTip(QApplication::translate("MainWindow", "connect to Serial", 0));
 #endif // QT_NO_TOOLTIP
         actionControlPanel->setText(QApplication::translate("MainWindow", "ControlPanel", 0));
+        actionTake_A_Pic->setText(QApplication::translate("MainWindow", "Take A Pic", 0));
         label_display->setText(QApplication::translate("MainWindow", "image to display", 0));
         menu->setTitle(QApplication::translate("MainWindow", "Tools", 0));
         menu_1->setTitle(QApplication::translate("MainWindow", "Help", 0));

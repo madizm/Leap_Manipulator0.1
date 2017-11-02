@@ -53,6 +53,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+QImage MainWindow::m_img;
+
 void MainWindow::createWidgetSpinner ()
 {
 	if (m_pWidgetSpinner == nullptr)
@@ -139,6 +141,7 @@ void MainWindow::receiveImgFromDeliverer(QImage img)
 {
 	//qDebug() << "display the frame";
 	ui->label_display->setPixmap(QPixmap::fromImage(img));
+	m_img = img;
 }
 
 void MainWindow::acceptConnection ()
@@ -160,7 +163,7 @@ void MainWindow::acceptConnection ()
 }
 
 void MainWindow::displayImage ()
-{
+{//discard
 	//socket中有足够多的数据 也就是说socket接送到了一张图片的数据 就将它显示
     QByteArray data = tcpServerConnection->read (m_nImageSize);
     QBuffer buf(&data);
@@ -177,7 +180,7 @@ void MainWindow::displayImage ()
 }
 
 void MainWindow::receiveImage ()
-{
+{//discard
     if(m_nImageSize==0){
 		//接收HEADSIZE个字节的数据 这个数据记录了图片的大小（Image Size）
         if(tcpServerConnection->bytesAvailable () < HEADSIZE)//socket中没有足够的数据 直接return
@@ -243,7 +246,7 @@ void MainWindow::on_actionTo_Serial_triggered()
 	//开启直接连到PC上的串口
 	if (m_pSerial == nullptr) {
 		m_pSerial = new SerialWin("\\\\.\\COM5");//出错的话 要改这个参数
-		as6dof = factory.createModel(ModelFactory::AS6DOF);
+		as6dof = (AS_6DOF*)factory.createModel(ModelFactory::AS6DOF);
 		as6dof->setSerial(m_pSerial);
 		listener.addObserverModel(as6dof);
 	}
@@ -280,7 +283,9 @@ void MainWindow::on_actionTo_Servo_Controller_triggered()
 		m_pSerial = new SerialWIFI(this); 
 		m_processSer->start("putty.exe -pw raspberry -m servo.sh pi@192.168.137.210");
 		//ModelFactory factory;
-		as6dof = factory.createModel(ModelFactory::AS6DOF);
+		AS_6DOF *pAs = new AS_6DOF;
+		Car_Doit *pCar = new Car_Doit;
+		as6dof = (AS_6DOF*)factory.createModel(ModelFactory::AS6DOF);
 		as6dof->setSerial(m_pSerial);
 		listener.addObserverModel(as6dof);
 		connect((SerialWIFI*)m_pSerial, &SerialWIFI::newConnection, this, &MainWindow::readySend);
@@ -361,4 +366,12 @@ void MainWindow::displaySocketError (QAbstractSocket::SocketError socketError)
 void MainWindow::on_actionSpinner_triggered()
 {
     createWidgetSpinner ();
+}
+
+void MainWindow::on_actionTake_A_Pic_triggered()
+{
+	std::cout << "clicked" << std::endl;
+	ShowAPic *pic = new ShowAPic(m_img, this);
+	connect(pic, &ShowAPic::sig_HSV, (m_pImgDeliverer->getImgProcessor()), &ImgProcessor::slt_setHSV);
+	pic->start();
 }

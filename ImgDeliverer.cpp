@@ -20,19 +20,20 @@ void ImgDeliverer::stopDelivering()
 	m_pImgRceiver->wait();
 }
 
+ImgProcessor * ImgDeliverer::getImgProcessor()
+{
+	return m_pImgRceiver->m_pImgProc;
+}
+
 void ImgDeliverer::run()
 {
 	m_pImgRceiver->start();
-	qDebug() << "enter imgDeliverer";
 	QQueue<QImage> *queue = &(m_pImgRceiver->imgQue);
 	while(m_bRunning)
 	{
-		//qDebug() << "imgDeliverer running";
-		if (!queue->isEmpty()) {
+		if (!queue->empty()) {
 			emit sig_aFrame(queue->dequeue());
-			//qDebug() << "emit a frame";
 		}
 		msleep(1000 / m_fFps);
 	}
-	qDebug() << "exit imgDeliverer";
 }

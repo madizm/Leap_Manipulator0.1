@@ -118,13 +118,11 @@ void FrameListener::reportCurrentInfo(VectorXf info)
 void FrameListener::handleTrans(AS_6DOF::TRANS_TYPE trans, int factor)
 {
 	for (int i = 0; i < numOberver; i++) {
-		if (observes[i]->inherits("AS_6DOF")) {
 			((AS_6DOF*)observes[i])->handleTrans(trans, factor);
-		}
 	}
 }
 
-void FrameListener::handleTrans_car(Car_Doit::TRANS_TYPE trans, int factor)
+void FrameListener::handleTrans_car(Car_Doit::TRANS_TYPE_CAR trans, int factor)
 {
 	for (int i = 0; i < numOberver; i++) {
 		if (observes[i]->inherits("Car_Doit")) {
@@ -136,18 +134,14 @@ void FrameListener::handleTrans_car(Car_Doit::TRANS_TYPE trans, int factor)
 void FrameListener::handleReset()
 {
 	for (int i = 0; i < numOberver; i++) {
-		if (observes[i]->inherits("AS_6DOF")) {
 			((AS_6DOF*)observes[i])->initModel();
-		}
 	}
 }
 
 void FrameListener::handleDegs(VectorXf deg)
 {
 	for (int i = 0; i < numOberver; i++) {
-		if (observes[i]->inherits("AS_6DOF")) {
 			((AS_6DOF*)observes[i])->setJointsDeg(deg);
-		}
 	}
 }
 

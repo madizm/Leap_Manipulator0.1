@@ -25,6 +25,7 @@ private slots:
 
 public:
 	QQueue<QImage> imgQue;
+	ImgProcessor* m_pImgProc;
 private:
 	QTcpServer *m_pTcpServer;
 	QTcpSocket *m_pTcpConnection;
@@ -34,7 +35,7 @@ private:
 	quint32 m_numBytesRecved;
 	QByteArray m_bufImage;
 
-	ImgProcessor* m_pImgProc;
+	
 	const int FREQUENCY = 10;
 	bool m_bRunning;
 	int cnt = FREQUENCY;

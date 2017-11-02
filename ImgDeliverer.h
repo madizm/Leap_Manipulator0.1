@@ -10,6 +10,7 @@ public:
 	ImgDeliverer(QObject *parent);
 	~ImgDeliverer();
 	void stopDelivering();
+	ImgProcessor* getImgProcessor();
 protected:
 	void run();
 signals:

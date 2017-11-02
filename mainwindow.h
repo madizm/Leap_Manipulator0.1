@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QTextCodec>
 #include <QtNetwork>
+#include <QImage>
 #include "servospinner.h"
 
 #include "FrameListener.h"
@@ -16,6 +17,7 @@
 #include "SerialWIFI.h"
 #include "ImgProcessor.h"
 #include "ImgDeliverer.h"
+#include "ShowAPic.h"
 namespace Ui {
 class MainWindow;
 }
@@ -59,10 +61,10 @@ private:
 	QAction* m_pCloseSerial;
 
 	ModelFactory factory;
-	Model* as6dof;
+	AS_6DOF* as6dof;
 
 	ImgDeliverer *m_pImgDeliverer;
-
+	static QImage m_img;
 private:
     void initServerCamera();
     void initProcess();
@@ -88,6 +90,7 @@ private slots:
 	void on_actionTo_Servo_Controller_triggered();
 	void on_actionControlPanel_triggered();
 	void on_actionSpinner_triggered();
+	void on_actionTake_A_Pic_triggered();
     //process
     void showProcessResult();
     void showProcessState(QProcess::ProcessState);
